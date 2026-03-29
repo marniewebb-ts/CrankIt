@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="./CI_AppIcon.png" alt="Crank It App Icon" width="128">
-</p>
+![Crank It App Icon](./CI_AppIcon.png)
 
 # Crank It 
 
