@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 struct CrankPost {
     let quote: String
@@ -10,18 +11,18 @@ struct CrankPost {
     
     // This builds your specific Markdown format
     var markdownBody: String {
-        let tagString = tags.map { "#\($0)" }.joined(separator: " ")
-        let footer = comment.isEmpty ? "" : "\n\n\(comment)"
-        
-        return """
-        > \(quote)
-        >
-        > -- [\(title)](\(url))
-        \(footer)
-        
-        \(tagString)
-        """
-    }
+            let tagString = tags.map { "#\($0)" }.joined(separator: " ")
+            let footer = comment.isEmpty ? "" : "\n\n\(comment)"
+            
+            return """
+            > \(quote)
+
+            [\(title)](\(url))
+            \(footer)
+
+            \(tagString)
+            """
+        }
 }
 
 class CrankService: ObservableObject {
@@ -51,7 +52,7 @@ class CrankService: ObservableObject {
         request.httpBody = components.query?.data(using: .utf8)
         
         do {
-            let (_, response) = try try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse else { return false }
             // 201 Created or 202 Accepted means we win
             return (201...202).contains(httpResponse.statusCode)
